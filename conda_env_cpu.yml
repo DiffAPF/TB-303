@@ -1,0 +1,22 @@
+name: acid
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - auraloss
+    - black
+    - jsonargparse[signatures]
+    - librosa
+    - matplotlib
+    - nnaudio
+    - numpy
+    - pandas
+    - torch
+    - pytorch-lightning
+    - torchaudio
+    - torchvision
+    - tensorboard
+    - torchsynth
+    - wandb

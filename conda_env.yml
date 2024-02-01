@@ -1,0 +1,26 @@
+name: acid
+channels:
+  - defaults
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch
+  - torchaudio
+  - torchvision
+  - cudatoolkit=11.8
+  - pip:
+    - auraloss
+    - black
+    - jsonargparse[signatures]
+    - librosa
+    - matplotlib
+    - nnaudio
+    - numpy
+    - nvitop
+    - pandas
+    - pytorch-lightning
+    - tensorboard
+    - torchsynth
+    - wandb

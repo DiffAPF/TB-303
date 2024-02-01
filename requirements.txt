@@ -1,0 +1,16 @@
+aiohttp==3.9.3
+auraloss==0.4.0
+black==24.1.1
+docstring-parser==0.15
+jsonargparse==4.27.3
+librosa==0.10.1
+matplotlib==3.8.2
+nnaudio==0.3.2
+pandas==2.2.0
+pip-chill==1.0.3
+tensorboard==2.15.1
+torchaudio==2.2.0
+torchsynth==1.0.2
+torchvision==0.17.0
+typeshed-client==2.4.0
+wandb==0.16.2

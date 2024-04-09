@@ -1,0 +1,13 @@
+class_path: models.Spectral2DCNN
+init_args:
+  fe: log_mel_spec.yml
+  kernel_size: [5, 7]
+  out_channels: [64, 64, 64, 64, 64, 64]
+  temp_dilations: [1, 1, 2, 4, 8, 16]
+  pool_size: [2, 1]
+  use_ln: true
+  n_temp_params: 5
+  temp_params_name: logits
+  temp_params_act_name: null
+  global_param_names: [osc_shape_0to1, osc_gain_0to1, dist_gain_0to1, learned_alpha_0to1]
+  dropout: 0.25

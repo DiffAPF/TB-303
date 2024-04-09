@@ -9,18 +9,21 @@ dependencies:
   - pytorch
   - torchaudio
   - torchvision
+  - lightning
+  - numba
   - cudatoolkit=11.8
   - pip:
     - auraloss
     - black
+    - hypy_utils
     - jsonargparse[signatures]
     - librosa
-    - matplotlib
-    - nnaudio
-    - numpy
+    - matplotlib==3.7.3
+    - numpy==1.23.5
     - nvitop
     - pandas
-    - pytorch-lightning
+    - resampy
+    - scipy==1.11.2
     - tensorboard
-    - torchsynth
     - wandb
+    - git+https://github.com/Neutone/neutone_sdk.git@c69108d6ad11910afdc3ce4ead0a647456e2addb

@@ -1,0 +1,83 @@
+seed_everything: 42
+
+custom:
+  project_name: acid_ddsp
+#  model_name: testing
+  model_name: cnn_mss_coeff_td
+#  model_name: cnn_mss_coeff_fs_128
+#  model_name: cnn_mss_coeff_fs_256
+#  model_name: cnn_mss_coeff_fs_512
+#  model_name: cnn_mss_coeff_fs_1024
+#  model_name: cnn_mss_coeff_fs_2048
+#  model_name: cnn_mss_coeff_fs_4096
+#  model_name: cnn_mss_lp_td
+#  model_name: cnn_mss_lp_fs_128
+#  model_name: cnn_mss_lp_fs_256
+#  model_name: cnn_mss_lp_fs_512
+#  model_name: cnn_mss_lp_fs_1024
+#  model_name: cnn_mss_lp_fs_2048
+#  model_name: cnn_mss_lp_fs_4096
+#  model_name: cnn_mss_lstm_64
+  dataset_name: abstract_303_48k__6k__4k_min
+  cpu_batch_size: 5  # For now must be >= n_examples
+  use_wandb_cpu: false
+  use_wandb_gpu: true
+
+trainer:
+  accelerator: gpu
+  benchmark: false
+  devices: [0]
+  max_epochs: 200
+  num_sanity_val_steps: 0
+  accumulate_grad_batches: 1
+  check_val_every_n_epoch: 8
+  gradient_clip_val: 0.5
+
+data:
+  class_path: data_modules.PreprocDataModule
+  init_args:
+    batch_size: 34
+    ac: audio_config.yml
+    data_dir: ../data/abstract_303_48k__6k__4k_min
+    ext: .wav
+    val_split: 0.2
+    test_split: 0.2
+    split_seed: 42
+    n_phases_per_file: 1
+    num_workers: 4
+
+model:
+  class_path: lightning.PreprocLightningModule
+  init_args:
+    ac: audio_config.yml
+    loss_func: auraloss.freq.MultiResolutionSTFTLoss
+    spectral_visualizer: log_mel_spec.yml
+    use_p_loss: false
+    log_envelope: true
+
+    model: spectral_2dcnn_coeff.yml
+    temp_params_name_hat: logits
+    global_param_names_hat: [ osc_shape, osc_gain, dist_gain, learned_alpha ]
+    synth_hat: synth_coeff_td.yml
+#    synth_hat: synth_coeff_fs_128.yml
+#    synth_hat: synth_coeff_fs_256.yml
+#    synth_hat: synth_coeff_fs_512.yml
+#    synth_hat: synth_coeff_fs_1024.yml
+#    synth_hat: synth_coeff_fs_2048.yml
+#    synth_hat: synth_coeff_fs_4096.yml
+    synth_eval: synth_coeff_td.yml
+
+#    model: spectral_2dcnn_lp.yml
+#    temp_params_name_hat: w_mod_sig
+#    global_param_names_hat: [ q, osc_shape, osc_gain, dist_gain, learned_alpha ]
+#    synth_hat: synth_lp_td.yml
+#    synth_hat: synth_lp_fs_128.yml
+#    synth_hat: synth_lp_fs_256.yml
+#    synth_hat: synth_lp_fs_512.yml
+#    synth_hat: synth_lp_fs_1024.yml
+#    synth_hat: synth_lp_fs_2048.yml
+#    synth_hat: synth_lp_fs_4096.yml
+#    synth_hat: synth_lstm_64.yml
+#    synth_eval: synth_lp_td.yml
+
+optimizer: adam_w.yml

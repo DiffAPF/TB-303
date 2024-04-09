@@ -565,3 +565,5 @@ cython_debug/
 lightning_logs/
 wandb_logs/
 scratch.py
+/ableton
+#/models

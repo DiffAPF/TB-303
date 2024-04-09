@@ -1,0 +1,68 @@
+{
+    "model_name": "acid_synth_model_coeff_fs",
+    "model_authors": [
+        "Christopher Mitcheltree"
+    ],
+    "model_version": "1.0.0",
+    "model_short_description": "TB-303 DDSP and control model implementation.",
+    "model_long_description": "TB-303 DDSP and control model implementation for 'Differentiable All-pole Filters for Time-varying Audio Systems'.",
+    "technical_description": "Wrapper for a TB-303 DDSP and control model implementation consisting of an analysis CNN that generates the parameters for a differentiable synth.",
+    "technical_links": {
+        "Code": "https://github.com/DiffAPF/TB-303"
+    },
+    "tags": [
+        "subtractive synth",
+        "acid",
+        "TB-303",
+        "sound matching"
+    ],
+    "citation": "",
+    "is_experimental": true,
+    "neutone_parameters": {
+        "p1": {
+            "name": "midi_f0",
+            "description": "Oscillator pitch quantized to the nearest midi pitch [f30, f60]",
+            "default_value": "0.5",
+            "used": "True",
+            "type": "continuous"
+        },
+        "p2": {
+            "name": "",
+            "description": "",
+            "default_value": "0.0",
+            "used": "False",
+            "type": "continuous"
+        },
+        "p3": {
+            "name": "",
+            "description": "",
+            "default_value": "0.0",
+            "used": "False",
+            "type": "continuous"
+        },
+        "p4": {
+            "name": "",
+            "description": "",
+            "default_value": "0.0",
+            "used": "False",
+            "type": "continuous"
+        }
+    },
+    "wet_default_value": 1.0,
+    "dry_default_value": 0.0,
+    "input_gain_default_value": 0.5,
+    "output_gain_default_value": 0.5,
+    "is_input_mono": true,
+    "is_output_mono": true,
+    "model_type": "mono-mono",
+    "native_sample_rates": [
+        48000
+    ],
+    "native_buffer_sizes": [
+        6000
+    ],
+    "look_behind_samples": 0,
+    "sdk_version": "1.4.3",
+    "pytorch_version": "2.1.2",
+    "date_created": 1712679236.431131
+}

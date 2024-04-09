@@ -1,0 +1,332 @@
+# pytorch_lightning==2.1.3
+seed_everything: 42
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: 1
+  num_nodes: 1
+  precision: 32
+  logger:
+    class_path: pytorch_lightning.loggers.TensorBoardLogger
+    init_args:
+      save_dir: lightning_logs
+      version: null
+      log_graph: false
+      default_hp_metric: true
+      prefix: ''
+      sub_dir: null
+      comment: ''
+      purge_step: null
+      max_queue: 10
+      flush_secs: 120
+      filename_suffix: ''
+  callbacks: null
+  fast_dev_run: false
+  max_epochs: 200
+  min_epochs: null
+  max_steps: -1
+  min_steps: null
+  max_time: null
+  limit_train_batches: null
+  limit_val_batches: null
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 8
+  num_sanity_val_steps: 0
+  log_every_n_steps: 1
+  enable_checkpointing: null
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: 0.5
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: false
+  inference_mode: true
+  use_distributed_sampler: true
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: null
+custom:
+  project_name: acid_ddsp
+  model_name: cnn_mss_coeff_fs_2048
+  dataset_name: abstract_303_48k__6k__4k_min
+  use_wandb_cpu: false
+  use_wandb_gpu: true
+  cpu_batch_size: 5
+  cpu_train_num_examples_per_epoch: 10
+  cpu_val_num_examples_per_epoch: 5
+  is_deterministic: true
+ckpt_path: null
+data:
+  class_path: data_modules.PreprocDataModule
+  init_args:
+    batch_size: 34
+    ac:
+      class_path: audio_config.AudioConfig
+      init_args:
+        sr: 48000
+        buffer_size_seconds: 0.125
+        note_on_duration: -1.0
+        min_f0_hz: -1.0
+        max_f0_hz: -1.0
+        min_attack: 0.001
+        max_attack: 0.001
+        min_decay: 0.124
+        max_decay: 0.124
+        min_sustain: 0.0
+        max_sustain: 0.0
+        min_release: 0.001
+        max_release: 0.001
+        min_alpha: 1.0
+        max_alpha: 1.0
+        min_w_hz: 100.0
+        max_w_hz: 8000.0
+        min_q: 0.7071
+        max_q: 8.0
+        min_dist_gain: 0.01
+        max_dist_gain: 4.0
+        min_osc_shape: 0.0
+        max_osc_shape: 1.0
+        min_osc_gain: 0.01
+        max_osc_gain: 1.0
+        min_learned_alpha: 0.1
+        max_learned_alpha: 6.0
+        stability_eps: 0.001
+    data_dir: ../data/abstract_303_48k__6k__4k_min
+    ext: .wav
+    val_split: 0.2
+    test_split: 0.2
+    split_seed: 42
+    n_phases_per_file: 1
+    num_workers: 4
+model:
+  class_path: lightning.PreprocLightningModule
+  init_args:
+    ac:
+      class_path: audio_config.AudioConfig
+      init_args:
+        sr: 48000
+        buffer_size_seconds: 0.125
+        note_on_duration: -1.0
+        min_f0_hz: -1.0
+        max_f0_hz: -1.0
+        min_attack: 0.001
+        max_attack: 0.001
+        min_decay: 0.124
+        max_decay: 0.124
+        min_sustain: 0.0
+        max_sustain: 0.0
+        min_release: 0.001
+        max_release: 0.001
+        min_alpha: 1.0
+        max_alpha: 1.0
+        min_w_hz: 100.0
+        max_w_hz: 8000.0
+        min_q: 0.7071
+        max_q: 8.0
+        min_dist_gain: 0.01
+        max_dist_gain: 4.0
+        min_osc_shape: 0.0
+        max_osc_shape: 1.0
+        min_osc_gain: 0.01
+        max_osc_gain: 1.0
+        min_learned_alpha: 0.1
+        max_learned_alpha: 6.0
+        stability_eps: 0.001
+    model:
+      class_path: models.Spectral2DCNN
+      init_args:
+        fe:
+          class_path: feature_extraction.LogMelSpecFeatureExtractor
+          init_args:
+            sr: 48000.0
+            n_fft: 1024
+            hop_len: 32
+            n_mels: 128
+            normalized: false
+            center: true
+            freq_mask_amount: 0.0
+            eps: 1.0e-07
+        in_ch: 1
+        kernel_size:
+        - 5
+        - 7
+        out_channels:
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+        bin_dilations: null
+        temp_dilations:
+        - 1
+        - 1
+        - 2
+        - 4
+        - 8
+        - 16
+        pool_size:
+        - 2
+        - 1
+        use_ln: true
+        n_temp_params: 5
+        temp_params_name: logits
+        temp_params_act_name: null
+        global_param_names:
+        - osc_shape_0to1
+        - osc_gain_0to1
+        - dist_gain_0to1
+        - learned_alpha_0to1
+        dropout: 0.25
+    loss_func:
+      class_path: auraloss.freq.MultiResolutionSTFTLoss
+      init_args:
+        fft_sizes:
+        - 1024
+        - 2048
+        - 512
+        hop_sizes:
+        - 120
+        - 240
+        - 50
+        win_lengths:
+        - 600
+        - 1200
+        - 240
+        window: hann_window
+        w_sc: 1.0
+        w_log_mag: 1.0
+        w_lin_mag: 0.0
+        w_phs: 0.0
+        sample_rate: null
+        scale: null
+        n_bins: null
+        perceptual_weighting: false
+        scale_invariance: false
+        eps: 1.0e-08
+        output: loss
+        reduction: mean
+        mag_distance: L1
+        device: null
+    spectral_visualizer:
+      class_path: feature_extraction.LogMelSpecFeatureExtractor
+      init_args:
+        sr: 48000.0
+        n_fft: 1024
+        hop_len: 32
+        n_mels: 128
+        normalized: false
+        center: true
+        freq_mask_amount: 0.0
+        eps: 1.0e-07
+    synth: null
+    synth_hat:
+      class_path: synths.AcidSynthLearnedBiquadCoeffFSM
+      init_args:
+        ac:
+          class_path: audio_config.AudioConfig
+          init_args:
+            sr: 48000
+            buffer_size_seconds: 0.125
+            note_on_duration: -1.0
+            min_f0_hz: -1.0
+            max_f0_hz: -1.0
+            min_attack: 0.001
+            max_attack: 0.001
+            min_decay: 0.124
+            max_decay: 0.124
+            min_sustain: 0.0
+            max_sustain: 0.0
+            min_release: 0.001
+            max_release: 0.001
+            min_alpha: 1.0
+            max_alpha: 1.0
+            min_w_hz: 100.0
+            max_w_hz: 8000.0
+            min_q: 0.7071
+            max_q: 8.0
+            min_dist_gain: 0.01
+            max_dist_gain: 4.0
+            min_osc_shape: 0.0
+            max_osc_shape: 1.0
+            min_osc_gain: 0.01
+            max_osc_gain: 1.0
+            min_learned_alpha: 0.1
+            max_learned_alpha: 6.0
+            stability_eps: 0.001
+        win_len: 2048
+        win_len_sec: null
+        overlap: 0.984375
+        oversampling_factor: 1
+        interp_logits: false
+    synth_eval:
+      class_path: synths.AcidSynthLearnedBiquadCoeff
+      init_args:
+        ac:
+          class_path: audio_config.AudioConfig
+          init_args:
+            sr: 48000
+            buffer_size_seconds: 0.125
+            note_on_duration: -1.0
+            min_f0_hz: -1.0
+            max_f0_hz: -1.0
+            min_attack: 0.001
+            max_attack: 0.001
+            min_decay: 0.124
+            max_decay: 0.124
+            min_sustain: 0.0
+            max_sustain: 0.0
+            min_release: 0.001
+            max_release: 0.001
+            min_alpha: 1.0
+            max_alpha: 1.0
+            min_w_hz: 100.0
+            max_w_hz: 8000.0
+            min_q: 0.7071
+            max_q: 8.0
+            min_dist_gain: 0.01
+            max_dist_gain: 4.0
+            min_osc_shape: 0.0
+            max_osc_shape: 1.0
+            min_osc_gain: 0.01
+            max_osc_gain: 1.0
+            min_learned_alpha: 0.1
+            max_learned_alpha: 6.0
+            stability_eps: 0.001
+        interp_logits: false
+        make_scriptable: false
+    temp_params_name: null
+    temp_params_name_hat: logits
+    global_param_names: null
+    global_param_names_hat:
+    - osc_shape
+    - osc_gain
+    - dist_gain
+    - learned_alpha
+    use_p_loss: false
+    log_envelope: true
+    fad_model_names: null
+    run_name: null
+optimizer:
+  class_path: torch.optim.AdamW
+  init_args:
+    lr: 0.001
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    weight_decay: 0.01
+    amsgrad: false
+    maximize: false
+    foreach: null
+    capturable: false
+    differentiable: false
+    fused: null

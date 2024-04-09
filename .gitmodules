@@ -1,0 +1,6 @@
+[submodule "torchlpc"]
+	path = torchlpc
+	url = git@github.com:christhetree/torchlpc.git
+[submodule "fadtk"]
+	path = fadtk
+	url = git@github.com:christhetree/fadtk.git

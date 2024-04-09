@@ -1,0 +1,4 @@
+class_path: synths.AcidSynthLSTM
+init_args:
+  ac: audio_config.yml
+  n_hidden: 64

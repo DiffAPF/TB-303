@@ -1,0 +1,3 @@
+class_path: synths.AcidSynthLPBiquad
+init_args:
+  ac: audio_config.yml

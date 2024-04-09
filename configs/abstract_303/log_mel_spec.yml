@@ -1,0 +1,10 @@
+class_path: feature_extraction.LogMelSpecFeatureExtractor
+init_args:
+  sr: 48000
+  n_fft: 1024
+  hop_len: 32
+  n_mels: 128
+  normalized: false
+  center: true
+  freq_mask_amount: 0.0
+  eps: 1e-7

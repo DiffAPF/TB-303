@@ -1,0 +1,6 @@
+class_path: synths.AcidSynthLearnedBiquadCoeffFSM
+init_args:
+  ac: audio_config.yml
+  win_len: 2048
+  overlap: 0.984375
+  oversampling_factor: 1

@@ -10,8 +10,8 @@
     <a href="https://www.eecs.qmul.ac.uk/~gyorgyf/about.html" target=”_blank”>György Fazekas</a>
 </p>
 
-[![Listening Samples](https://img.shields.io/badge/%F0%9F%94%8A%F0%9F%8E%B6-Listening_Samples-blue)](https://christhetree.github.io/all_pole_filters/)
-[![Plugins](https://img.shields.io/badge/neutone-Plugins-blue)](https://christhetree.github.io/all_pole_filters/index.html#plugins)
+[![Listening Samples](https://img.shields.io/badge/%F0%9F%94%8A%F0%9F%8E%B6-Listening_Samples-blue)](https://diffapf.github.io/web/)
+[![Plugins](https://img.shields.io/badge/neutone-Plugins-blue)](https://diffapf.github.io/web/index.html#plugins)
 [![License](https://img.shields.io/badge/License-MPL%202.0-orange)](https://www.mozilla.org/en-US/MPL/2.0/FAQ/)
 
 <h2>Time-varying Subtractive Synthesizer (<em>Roland TB-303 Bass Line</em>) Experiments</h2>

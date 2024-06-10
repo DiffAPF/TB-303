@@ -55,3 +55,14 @@
     The source code is currently not documented, but don't hesitate to open an issue if you have any questions or comments.
     </li>
 </ol>
+
+## Citation
+
+```bibtex
+@inproceedings{ycy2024diffapf,
+  title={Differentiable All-pole Filters for Time-varying Audio Systems},
+  author={Chin-Yun Yu and Christopher Mitcheltree and Alistair Carson and Stefan Bilbao and Joshua D. Reiss and György Fazekas},
+  booktitle={International Conference on Digital Audio Effects (DAFx)},
+  year={2024}
+}
+```

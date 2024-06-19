@@ -48,18 +48,32 @@ def sample_wise_lpc_scriptable(x: T, a: T, zi: Optional[T] = None) -> T:
     else:
         assert zi.shape == (B, order)
 
-    padded_y = tr.empty((B, T + order), dtype=x.dtype)
     zi = tr.flip(zi, dims=[1])
-    padded_y[:, :order] = zi
-    padded_y[:, order:] = x
     a_flip = tr.flip(a, dims=[2])
+    padded_y = tr.cat([zi, x], dim=1)
 
     for t in range(T):
-        padded_y[:, t + order] -= (
-            a_flip[:, t : t + 1] @ padded_y[:, t : t + order, None]
-        )[:, 0, 0]
+        prod = a_flip[:, t: t + 1] @ padded_y[:, t: t + order, None]
+        prod = prod[:, 0, 0]
+        padded_y[:, t + order] -= prod
 
     return padded_y[:, order:]
+
+
+def sample_wise_lpc_cpp(x: T, a: T, zi: Optional[T] = None) -> T:
+    assert a.ndim == 3
+    B, T, order = a.shape
+    if zi is None:
+        zi = a.new_zeros(B, order)
+    return tr.ops.torchlpc.forward(x, a, zi)
+
+
+def sample_wise_lpc_cpp_batch_parallel(x: T, a: T, zi: Optional[T] = None) -> T:
+    assert a.ndim == 3
+    B, T, order = a.shape
+    if zi is None:
+        zi = a.new_zeros(B, order)
+    return tr.ops.torchlpc.forward_batch_parallel(x, a, zi)
 
 
 def calc_logits_to_biquad_a_coeff_triangle(a_logits: T, eps: float = 1e-3) -> T:
@@ -246,7 +260,8 @@ class TimeVaryingLPBiquad(nn.Module):
     def toggle_scriptable(self, is_scriptable: bool) -> None:
         self.is_scriptable = is_scriptable
         if is_scriptable:
-            self.lpc_func = sample_wise_lpc_scriptable
+            # self.lpc_func = sample_wise_lpc_scriptable
+            self.lpc_func = sample_wise_lpc_cpp
         else:
             self.lpc_func = sample_wise_lpc
 

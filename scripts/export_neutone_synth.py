@@ -308,6 +308,14 @@ class AcidSynthWrapper(WaveformToWaveformBase):
 
 
 if __name__ == "__main__":
+    import torch.utils.cpp_extension  # Import is needed first
+    torch.utils.cpp_extension.load(
+        name="torchlpc",
+        sources=["../cpp/torchlpc.cpp"],
+        is_python_module=False,
+        verbose=True
+    )
+
     model = AcidSynth(use_fs=False)
     wrapper = AcidSynthWrapper(model)
     root_dir = pathlib.Path(

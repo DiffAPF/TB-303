@@ -217,6 +217,14 @@ class AcidSynthModelWrapper(WaveformToWaveformBase):
 
 
 if __name__ == "__main__":
+    import torch.utils.cpp_extension  # Import is needed first
+    torch.utils.cpp_extension.load(
+        name="torchlpc",
+        sources=["../cpp/torchlpc.cpp"],
+        is_python_module=False,
+        verbose=True
+    )
+
     model_dir = MODELS_DIR
     model_name = "cnn_mss_coeff_td__abstract_303_48k__6k__4k_min__epoch_199_step_1200"
     # model_name = "cnn_mss_coeff_fs_128__abstract_303_48k__6k__4k_min__epoch_143_step_864"

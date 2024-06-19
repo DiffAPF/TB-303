@@ -20,6 +20,7 @@ from filters import (
     TimeVaryingLPBiquadFSM,
     TimeVaryingIIRFSM,
     sample_wise_lpc_scriptable,
+    sample_wise_lpc_cpp,
 )
 from torchlpc import sample_wise_lpc
 
@@ -203,7 +204,8 @@ class AcidSynthLearnedBiquadCoeff(AcidSynthBase):
     def toggle_scriptable(self, is_scriptable: bool) -> None:
         self.is_scriptable = is_scriptable
         if is_scriptable:
-            self.lpc_func = sample_wise_lpc_scriptable
+            # self.lpc_func = sample_wise_lpc_scriptable
+            self.lpc_func = sample_wise_lpc_cpp
         else:
             self.lpc_func = sample_wise_lpc
 
